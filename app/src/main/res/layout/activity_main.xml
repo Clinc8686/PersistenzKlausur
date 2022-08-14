@@ -37,7 +37,8 @@
         android:hint="Pin"
         app:layout_constraintBottom_toTopOf="@+id/speichern"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:inputType="numberPassword"/>
 
     <Button
         android:id="@+id/speichern"
