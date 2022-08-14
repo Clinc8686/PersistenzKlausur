@@ -2,7 +2,11 @@ package de.clinc8686.persistenzklausur;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -31,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         speichern.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences prefs = getSharedPreferences("Kundendaten", MODE_PRIVATE);
+                SharedPreferences prefs = getSharedPreferences("Kundendaten", Context.MODE_PRIVATE);
                 SharedPreferences.Editor edit = prefs.edit();
                 edit.putString("name", name.getText().toString());
                 edit.putString("kundennummer", kdnr.getText().toString());
@@ -56,4 +60,30 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void sqlschreiben(View view) {
+        SQLiteDatabase db = new DatabaseHelperKlausur(this).getWritableDatabase();
+        ContentValues val = new ContentValues();
+        val.put(DatabaseHelperKlausur.TITLE_NAME, name.getText().toString());
+        val.put(DatabaseHelperKlausur.DESCR_NAME, kdnr.getText().toString());
+        db.insert(DatabaseHelperKlausur.TABLE_NAME, null, val);
+        db.close();
+    }
+
+    public void sqllesen(View view) {
+        SQLiteDatabase db = new DatabaseHelperKlausur(this).getReadableDatabase();
+        Cursor cur = db.query(DatabaseHelperKlausur.TABLE_NAME, null, null, null, null, null, DatabaseHelperKlausur.TITLE_NAME, null);
+        StringBuilder text = new StringBuilder();
+
+        int titleIdx = cur.getColumnIndex(DatabaseHelperKlausur.TITLE_NAME);
+        int descrIdx = cur.getColumnIndex(DatabaseHelperKlausur.DESCR_NAME);
+
+        if (cur.moveToFirst()) {
+            do {
+                text.append(cur.getString(titleIdx)).append(" ");
+                text.append(cur.getString(descrIdx)).append(" ");
+            } while (cur.moveToNext());
+        }
+
+        Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
+    }
 }

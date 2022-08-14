@@ -10,6 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PersistenzKlausur">
         <activity
+            android:name="Sensor.SensorReaderKlausur"
+            android:exported="true" />
+        <activity
+            android:name="Services.ServiceStarter"
+            android:exported="true" /> <!-- notwendig für service -->
+        <service
+            android:name="Services.ExampleServiceKlausur"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity
             android:name="Broadcasts.BroadcastsKlausur"
             android:exported="true" />
 
@@ -18,8 +29,8 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter> <!-- static receiver -->
-                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
-                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
             </intent-filter>
         </receiver>
 
